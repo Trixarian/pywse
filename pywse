@@ -1,0 +1,159 @@
+#!/usr/bin/env python
+# ====================
+#     PyWSE v0.2     |
+#    By Trixar_za    |
+# Released under CC0 |
+# ====================
+import os, fileinput, subprocess, time
+import gtk, gobject
+import webkit
+#import BaseHTTPServer
+#from SimpleHTTPServer import SimpleHTTPRequestHandler
+
+def read_settings(key):
+	value = None
+	file = open("settings.ini")
+	for line in file.readlines():
+		if "#" not in line:
+			data = line.split("=")[0].strip()
+			if key.lower() in data.lower():
+				value = line.split("=")[1].strip()
+				break
+	file.close()
+	return value
+
+def write_settings(key, value):
+	for line in fileinput.input("settings.ini",inplace=1):
+		data = line.split("=")[0].strip()
+		if key.lower() in data.lower():
+			print data+" = "+value
+		else: print line.strip()
+
+class WSEClient():
+	def get_width(self):
+		self.width = None
+		self.gamepath = read_settings("Directory")
+		self.file = open(self.gamepath+"/game.xml")
+		for self.line in self.file.readlines():
+			if "<stage" in self.line:
+				for self.data in self.line.split():
+					if "width" in self.data:
+						self.width = str(self.data.split("=")[1]).strip('"')
+						break
+				break
+		if self.width: return int(self.width.strip("px"))
+
+	def get_height(self):
+		self.height = None
+		self.gamepath = read_settings("Directory")
+		self.file = open(self.gamepath+"/game.xml")
+		for self.line in self.file.readlines():
+			if "<stage" in self.line:
+				for self.data in self.line.split():
+					if "height" in self.data:
+						self.height = str(self.data.split("=")[1]).strip('"')
+						break
+				break
+		if self.height: return int(self.height.strip("px"))
+	
+	def window_state(self, window, event):
+		global fullscreen
+		if event.changed_mask & gtk.gdk.WINDOW_STATE_FULLSCREEN:
+			if event.new_window_state & gtk.gdk.WINDOW_STATE_FULLSCREEN:
+				fullscreen = True
+				write_settings("DisplayMode", "fullscreen")
+			else:
+				fullscreen = False
+				write_settings("DisplayMode", "windowed")
+
+		if event.changed_mask & gtk.gdk.WINDOW_STATE_MAXIMIZED:
+			if event.new_window_state & gtk.gdk.WINDOW_STATE_MAXIMIZED:
+				write_settings("DisplayMode", "maximized")
+			else: write_settings("DisplayMode", "windowed")
+	
+	def fullscreen(self, window, event, key=gtk.keysyms.F11):
+		global fullscreen
+		if event.keyval == key:
+			if fullscreen: 
+				window.unfullscreen()
+			else: 
+				window.fullscreen()
+
+	def delete_event(self, widget, event, data=None):
+		return False
+
+	def quit(self, widget, data=None):
+		global httpd
+		httpd.kill()
+		gtk.main_quit()
+
+	def __init__(self):
+		global fullscreen
+		gobject.threads_init()
+
+		fullscreen = False
+		
+		# Load up some variables
+		self.width = self.get_width()
+		self.height = self.get_height()
+		self.displaymode = read_settings("DisplayMode").lower()
+
+		# Initial Window Settings
+		self.window = gtk.Window(gtk.WINDOW_TOPLEVEL)
+		self.window.set_title(read_settings("Title"))
+		self.window.set_default_size(self.width, self.height)
+		self.window.set_size_request(self.width, self.height)
+		self.window.set_resizable(True)
+		self.window.set_position(gtk.WIN_POS_CENTER)
+		if self.displaymode == "maximized":
+			self.window.maximize()
+		if self.displaymode == "fullscreen":
+			self.window.fullscreen()
+			fullscreen = True
+
+		# Handles the events
+		self.window.connect("delete_event", self.delete_event)
+		self.window.connect("destroy", self.quit)
+		self.window.connect("window-state-event", self.window_state)
+		self.window.connect("key-press-event", self.fullscreen)
+
+		# Add in webkit features
+		self.web_view = webkit.WebView()
+		self.gamepath = read_settings("Directory")
+		self.gameport = read_settings("Port")
+		self.web_view.open("http://127.0.0.1:"+self.gameport+"/"+self.gamepath+"/")
+
+		# Add Scrollbars as needed
+		self.scrolled_window = gtk.ScrolledWindow(None, None)
+		self.scrolled_window.add(self.web_view)
+		self.box = gtk.VBox(False, 0)
+		self.box.add(self.scrolled_window)
+
+		self.window.add(self.box)
+		self.window.show_all()
+
+	def main(self):
+   		gtk.main()
+
+#class WebServer():
+	#def __init__(self):
+		#HandlerClass = SimpleHTTPRequestHandler
+		#ServerClass  = BaseHTTPServer.HTTPServer
+		#Protocol = "HTTP/1.0"
+		#self.port = 8000
+		#self.server_address = ('127.0.0.1', self.port)
+		#HandlerClass.protocol_version = Protocol
+		#self.httpd = ServerClass(self.server_address, HandlerClass)
+		#sa = self.httpd.socket.getsockname()
+		#print "Web Server Started" 
+		#self.httpd.serve_forever()
+
+if __name__=="__main__":
+	global httpd
+	gameport = read_settings("Port")
+	#web=WebServer()
+	#web.start()
+	httpd = subprocess.Popen(["python", "-m", "SimpleHTTPServer", gameport], shell=False, bufsize=-1)
+	time.sleep(1.5)
+	wse=WSEClient()
+	wse.main()
