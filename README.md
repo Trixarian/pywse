@@ -5,7 +5,7 @@ PyWSE is a Container program for the WebStory Engine (http://webstoryengine.org)
 Requirements:
 * Python 2.2+  
   - pygtk  
-  - pywebkitgtk (Included with PyWSE)  
+  - pywebkitgtk 
 * GTK 2  
 * libwebkit (video/media enabled)
 
@@ -28,5 +28,3 @@ License
 This code is released under the Creative Commons Zero license, which places it in the Public Domain while obsolving me of any responsibility or liablity that may result from the use or misuse of this code. Basically put, you have the full right to do whatever you want with the code without any restrictions including modifying and selling it. The only thing you cannot do is sue me if things go wrong. Read LICENSE for more information on this.
 
 The WebStory Engine is released under the BSD 3-Clause License and copyright of the WebStory Engine Contributors.
-
-PyWebkitGTK is released under LGPL v2 and is copyright of Jan Michael Alonzo.

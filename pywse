@@ -7,7 +7,7 @@
 import os, fileinput, subprocess, time
 import gobject
 import gtk
-from lib import webkit
+import webkit
 #import BaseHTTPServer
 #from SimpleHTTPServer import SimpleHTTPRequestHandler
 
@@ -124,14 +124,22 @@ class WSEClient():
 		self.window.connect("key-press-event", self.fullscreen)
 
 		# Add in webkit features
-		self.web_view = webkit.WebView()
+		self.webview = webkit.WebView()
 		self.gamepath = read_settings("Directory")
 		self.gameport = read_settings("Port")
-		self.web_view.open("http://127.0.0.1:"+self.gameport+"/"+self.gamepath+"/")
+
+		# Nice Reference to this: http://webkitgtk.org/reference/webkitgtk/stable/WebKitWebSettings.html
+		self.settings = self.webview.get_settings()
+		self.settings.set_property("enable-page-cache", 1)
+		self.settings.set_property("enable-html5-database", 1)
+		self.settings.set_property("enable-html5-local-storage", 1)
+		self.settings.set_property("enable-offline-web-application-cache", 1)
+		self.settings.set_property("enable-file-access-from-file-uris", 1)
+		self.webview.open("http://127.0.0.1:"+self.gameport+"/"+self.gamepath+"/")
 
 		# Add Scrollbars as needed
 		self.scrolled_window = gtk.ScrolledWindow(None, None)
-		self.scrolled_window.add(self.web_view)
+		self.scrolled_window.add(self.webview)
 		self.box = gtk.VBox(False, 0)
 		self.box.add(self.scrolled_window)
 
@@ -155,7 +163,7 @@ class WSEClient():
 		#self.httpd.serve_forever()
 
 webserv()
-time.sleep(1)
+time.sleep(1.6)
 
 if __name__=="__main__":
 	wse=WSEClient()
