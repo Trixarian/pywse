@@ -4,8 +4,8 @@ PyWSE is a Container program for the WebStory Engine (http://webstoryengine.org)
 
 Requirements:
 * Python 2.2+  
-  - pygtk
-  - pywebkitgtk  
+  - pygtk  
+  - pywebkitgtk (Included with PyWSE)  
 * GTK 2  
 * libwebkit (video/media enabled)
 
@@ -15,7 +15,7 @@ How do I use it?
 Double click pywse to have a look at the demo.
 
 For use with your own game:  
-1. Place all the game related files (assets and webstory engine) in a directory called game. You can name the directory something other than game, but you'll have to change Directory in settings.ini to reflect this.
+1. Place all the game related files (assets and webstory engine) in a directory called game. You can name the directory something other than game, but you'll have to change Directory in settings.ini to reflect this.  
 2. Rename the pywse file to something else. I recommend the name of your game. ;)  
 3. Modify settings.ini to suit your needs, write a simple README file and delete the LICENSE file if you want.  
 4. Distribute!  
@@ -27,4 +27,6 @@ License
 -------
 This code is released under the Creative Commons Zero license, which places it in the Public Domain while obsolving me of any responsibility or liablity that may result from the use or misuse of this code. Basically put, you have the full right to do whatever you want with the code without any restrictions including modifying and selling it. The only thing you cannot do is sue me if things go wrong. Read LICENSE for more information on this.
 
-The WebStory Engine, which is seperate from and included with PyWSE, is released under the BSD 3-Clause License and copyright of the WebStory Engine Contributors.
+The WebStory Engine is released under the BSD 3-Clause License and copyright of the WebStory Engine Contributors.
+
+PyWebkitGTK is released under LGPL v2 and is copyright of Jan Michael Alonzo.

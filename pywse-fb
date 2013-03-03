@@ -4,12 +4,9 @@
 #    By Trixar_za    |
 # Released under CC0 |
 # ====================
-import os, fileinput, subprocess, time
-import gobject
+import os, fileinput
 import gtk
-from lib import webkit
-#import BaseHTTPServer
-#from SimpleHTTPServer import SimpleHTTPRequestHandler
+import webkit
 
 def read_settings(key):
 	value = None
@@ -29,11 +26,6 @@ def write_settings(key, value):
 		if key.lower() in data.lower():
 			print data+" = "+value
 		else: print line.strip()
-
-def webserv():
-	global httpd
-	gameport = read_settings("Port")
-	httpd = subprocess.Popen(["python", "-m", "SimpleHTTPServer", gameport], shell=False, bufsize=-1)
 
 class WSEClient():
 	def get_width(self):
@@ -90,12 +82,10 @@ class WSEClient():
 
 	def quit(self, widget, data=None):
 		global httpd
-		httpd.kill()
 		gtk.main_quit()
 
 	def __init__(self):
 		global fullscreen
-		gobject.threads_init()
 
 		fullscreen = False
 		
@@ -124,14 +114,16 @@ class WSEClient():
 		self.window.connect("key-press-event", self.fullscreen)
 
 		# Add in webkit features
-		self.web_view = webkit.WebView()
+		self.webview = webkit.WebView()
 		self.gamepath = read_settings("Directory")
-		self.gameport = read_settings("Port")
-		self.web_view.open("http://127.0.0.1:"+self.gameport+"/"+self.gamepath+"/")
+		self.settings = self.webview.get_settings()
+		self.settings.set_property("enable-file-access-from-file-uris", 1)
+		self.settings.set_property("enable-universal-access-from-file-uris", 1)
+		self.webview.open("file://"+os.getcwd()+"/"+self.gamepath+"/index.html")
 
 		# Add Scrollbars as needed
 		self.scrolled_window = gtk.ScrolledWindow(None, None)
-		self.scrolled_window.add(self.web_view)
+		self.scrolled_window.add(self.webview)
 		self.box = gtk.VBox(False, 0)
 		self.box.add(self.scrolled_window)
 
@@ -141,22 +133,9 @@ class WSEClient():
 	def main(self):
    		gtk.main()
 
-#class WebServer():
-	#def __init__(self):
-		#HandlerClass = SimpleHTTPRequestHandler
-		#ServerClass  = BaseHTTPServer.HTTPServer
-		#Protocol = "HTTP/1.0"
-		#self.port = 8000
-		#self.server_address = ('127.0.0.1', self.port)
-		#HandlerClass.protocol_version = Protocol
-		#self.httpd = ServerClass(self.server_address, HandlerClass)
-		#sa = self.httpd.socket.getsockname()
-		#print "Web Server Started" 
-		#self.httpd.serve_forever()
-
-webserv()
-time.sleep(1)
 
 if __name__=="__main__":
+	# Enable threading
+	gtk.threads_init()
 	wse=WSEClient()
 	wse.main()
