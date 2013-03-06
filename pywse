@@ -4,12 +4,13 @@
 #    By Trixar_za    |
 # Released under CC0 |
 # ====================
-import os, fileinput, subprocess, time
+import fileinput
 import gobject
 import gtk
 import webkit
-#import BaseHTTPServer
-#from SimpleHTTPServer import SimpleHTTPRequestHandler
+from threading import Thread
+import BaseHTTPServer
+from SimpleHTTPServer import SimpleHTTPRequestHandler
 
 def read_settings(key):
 	value = None
@@ -31,9 +32,16 @@ def write_settings(key, value):
 		else: print line.strip()
 
 def webserv():
-	global httpd
-	gameport = read_settings("Port")
-	httpd = subprocess.Popen(["python", "-m", "SimpleHTTPServer", gameport], shell=False, bufsize=-1)
+	HandlerClass = SimpleHTTPRequestHandler
+	ServerClass  = BaseHTTPServer.HTTPServer
+	port = int(read_settings("Port"))
+	server_address = ('127.0.0.1', port)
+	httpd = ServerClass(server_address, HandlerClass)
+	httpd.serve_forever()
+
+global httpd
+httpd = Thread(target=webserv)
+httpd.start()
 
 class WSEClient():
 	def get_width(self):
@@ -90,7 +98,7 @@ class WSEClient():
 
 	def quit(self, widget, data=None):
 		global httpd
-		httpd.kill()
+		httpd._Thread__stop()
 		gtk.main_quit()
 
 	def __init__(self):
@@ -149,21 +157,6 @@ class WSEClient():
 	def main(self):
    		gtk.main()
 
-#class WebServer():
-	#def __init__(self):
-		#HandlerClass = SimpleHTTPRequestHandler
-		#ServerClass  = BaseHTTPServer.HTTPServer
-		#Protocol = "HTTP/1.0"
-		#self.port = 8000
-		#self.server_address = ('127.0.0.1', self.port)
-		#HandlerClass.protocol_version = Protocol
-		#self.httpd = ServerClass(self.server_address, HandlerClass)
-		#sa = self.httpd.socket.getsockname()
-		#print "Web Server Started" 
-		#self.httpd.serve_forever()
-
-webserv()
-time.sleep(1.6)
 
 if __name__=="__main__":
 	wse=WSEClient()
