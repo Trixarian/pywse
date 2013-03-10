@@ -4,13 +4,15 @@
 #    By Trixar_za    |
 # Released under CC0 |
 # ====================
-import fileinput
-import gobject
 import gtk
+import gobject
 import webkit
+import fileinput
 from threading import Thread
 import BaseHTTPServer
 from SimpleHTTPServer import SimpleHTTPRequestHandler
+
+gobject.threads_init()
 
 def read_settings(key):
 	value = None
@@ -103,7 +105,6 @@ class WSEClient():
 
 	def __init__(self):
 		global fullscreen
-		gobject.threads_init()
 
 		fullscreen = False
 		
@@ -143,7 +144,8 @@ class WSEClient():
 		self.settings.set_property("enable-html5-local-storage", 1)
 		self.settings.set_property("enable-offline-web-application-cache", 1)
 		self.settings.set_property("enable-file-access-from-file-uris", 1)
-		self.webview.open("http://127.0.0.1:"+self.gameport+"/"+self.gamepath+"/")
+#		self.webview.open("http://127.0.0.1:"+self.gameport+"/"+self.gamepath+"/")
+		self.webview.open("http://127.0.0.1/~brenton/game/")
 
 		# Add Scrollbars as needed
 		self.scrolled_window = gtk.ScrolledWindow(None, None)

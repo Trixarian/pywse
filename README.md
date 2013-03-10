@@ -1,13 +1,14 @@
 PyWSE 0.2
 =========
-PyWSE is a Container program for the WebStory Engine (http://webstoryengine.org) with the intent of creating a way for users to have a working local copy they can distribute in a file form. It currently only works on Linux with the Requirements installed, but there are plans to make this program stand-alone and multi-platform using PyInstaller - just as soon as I fix the damn SimpleHTTPServer issues :P
+![PyWSE Example](http://brenton.nom.za/demo.jpg)
+PyWSE is a Container program for the WebStory Engine (http://webstoryengine.org) with the intent of creating a way for users to have a working local copy they can distribute in a file form. It currently only works on Linux with the Requirements installed, but there are plans to make this program stand-alone and multi-platform.
 
 Requirements:
 * Python 2.2+  
   - pygtk  
   - pywebkitgtk 
 * GTK 2  
-* libwebkit (video/media enabled)
+* libwebkit (media enabled)
 
 
 How do I use it?
@@ -19,8 +20,6 @@ For use with your own game:
 2. Rename the pywse file to something else. I recommend the name of your game. ;)  
 3. Modify settings.ini to suit your needs, write a simple README file and delete the LICENSE file if you want.  
 4. Distribute!  
-
-Future versions will include pyinstaller which should simplify the creation of stand-alone binaries for Windows, Linux and MacOs for systems without Python or the other requirements installed. Watch this space ;)
 
 
 License
