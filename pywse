@@ -144,8 +144,7 @@ class WSEClient():
 		self.settings.set_property("enable-html5-local-storage", 1)
 		self.settings.set_property("enable-offline-web-application-cache", 1)
 		self.settings.set_property("enable-file-access-from-file-uris", 1)
-#		self.webview.open("http://127.0.0.1:"+self.gameport+"/"+self.gamepath+"/")
-		self.webview.open("http://127.0.0.1/~brenton/game/")
+		self.webview.open("http://127.0.0.1:"+self.gameport+"/"+self.gamepath+"/")
 
 		# Add Scrollbars as needed
 		self.scrolled_window = gtk.ScrolledWindow(None, None)
