@@ -5,6 +5,7 @@
 # Released under CC0 |
 # ====================
 import os
+import random
 import gtk
 import gobject
 import webkit
@@ -128,7 +129,8 @@ class RequestHandler(SimpleHTTPRequestHandler):
 		return (f, start_range, end_range)
 
 def webserv():
-	port = int(read_settings("Port"))
+	global port
+	port = random.randint(4000, 4999)
 	server_address = ('127.0.0.1', port)
 	httpd = HTTPServer(server_address, RequestHandler)
 	try: httpd.serve_forever()
@@ -227,7 +229,6 @@ class WSEClient():
 		# Add in webkit features
 		self.webview = webkit.WebView()
 		self.gamepath = read_settings("Directory")
-		self.gameport = read_settings("Port")
 
 		# Nice Reference to this: http://webkitgtk.org/reference/webkitgtk/stable/WebKitWebSettings.html
 		self.settings = self.webview.get_settings()
@@ -236,7 +237,7 @@ class WSEClient():
 		self.settings.set_property("enable-html5-local-storage", 1)
 		self.settings.set_property("enable-offline-web-application-cache", 1)
 		self.settings.set_property("enable-file-access-from-file-uris", 1)
-		self.webview.open("http://127.0.0.1:"+self.gameport+"/"+self.gamepath+"/")
+		self.webview.open("http://127.0.0.1:"+str(port)+"/"+self.gamepath+"/")
 
 		# Add Scrollbars as needed
 		self.scrolled_window = gtk.ScrolledWindow(None, None)
