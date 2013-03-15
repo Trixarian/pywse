@@ -1,5 +1,5 @@
-PyWSE 0.2
-=========
+PyWSE v0.5
+==========
 
 PyWSE is a Container program for the WebStory Engine (http://webstoryengine.org) with the intent of creating a way for users to have a working local copy they can distribute in a file form. It currently only works on Linux with the Requirements installed, but there are plans to make this program stand-alone and multi-platform.
 
