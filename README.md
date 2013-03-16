@@ -10,7 +10,8 @@ Requirements:
   - pygtk  
   - pywebkitgtk 
 * GTK 2  
-* libwebkit (media enabled)
+* libwebkit
+  - gst-plugins-base
 
 
 How do I use it?

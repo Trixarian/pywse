@@ -5,15 +5,13 @@
 # Released under CC0 |
 # ====================
 import os
-import posixpath
-import mimetypes
+import sys
 import random
 import gtk
 import gobject
 import webkit
 import fileinput
 from threading import Thread
-import SocketServer
 import BaseHTTPServer
 from SimpleHTTPServer import SimpleHTTPRequestHandler
 
@@ -38,12 +36,14 @@ def write_settings(key, value):
 			print data+" = "+value
 		else: print line.strip()
 
+global base_mode
+base_mode = "no"
+if (len(sys.argv) > 1):
+	if sys.argv[1] == "--base":
+		base_mode = "yes"
 
-# Threaded WebServer with Ranged HEAD and GET responses
+# WebServer with Ranged HEAD and GET responses
 # Thanks to James Shubin, Xyne and Sean Goller for the base work!
-class HTTPServer(SocketServer.ThreadingMixIn, BaseHTTPServer.HTTPServer):
-    pass
-
 class RequestHandler(SimpleHTTPRequestHandler):
 	def __init__(self,req,client_addr,server):
 		SimpleHTTPRequestHandler.__init__(self,req,client_addr,server)
@@ -63,20 +63,6 @@ class RequestHandler(SimpleHTTPRequestHandler):
 					break
 				total += chunk
 				start_range += chunk
-			f.close()
-
-	def do_HEAD(self):
-		if self.path.startswith(self.server.magic):
-			func = self.server.callback
-			if callable(func) and func(self.path):
-				self.send_response(200)
-				self.end_headers()
-			else:
-				self.send_error(404, 'Request failed.')
-			return
-
-		f, start_range, end_range = self.send_head()
-		if f:
 			f.close()
 
 	def send_head(self):
@@ -130,40 +116,16 @@ class RequestHandler(SimpleHTTPRequestHandler):
 		self.end_headers()
 		return (f, start_range, end_range)
 
-	def guess_type(self, path):
-		base, ext = posixpath.splitext(path)
-		if ext in self.extensions_map:
-			return self.extensions_map[ext]
-		ext = ext.lower()
-		if ext in self.extensions_map:
-			return self.extensions_map[ext]
-		else:
-			return self.extensions_map['']
-
-	if not mimetypes.inited:
-		mimetypes.init() # try to read system mime.types
-	extensions_map = mimetypes.types_map.copy()
-	extensions_map.update({
-		'': 'application/octet-stream', # Default
-		'.avi': 'video/avi',
-		'.mp4': 'video/mp4',
-		'.ogv': 'video/ogv',
-		'.mp3': 'audio/mp3',
-		'.ogg': 'audio/ogg',
-		})
-
 def webserv():
 	global port
 	port = random.randint(4000, 4999)
 	server_address = ('127.0.0.1', port)
-	httpd = HTTPServer(server_address, RequestHandler)
-#	try: httpd.serve_forever()
-#	except: pass
+	if base_mode == "yes":
+		httpd = BaseHTTPServer.HTTPServer(server_address, SimpleHTTPRequestHandler)
+		print "Starting in Basic Mode..."
+	else:
+		httpd = BaseHTTPServer.HTTPServer(server_address, RequestHandler)
 	httpd.serve_forever()
-
-httpd = Thread(target=webserv)
-httpd.daemon = True
-httpd.start()
 
 
 class WSEClient():
@@ -262,7 +224,7 @@ class WSEClient():
 		self.settings.set_property("enable-html5-local-storage", 1)
 		self.settings.set_property("enable-offline-web-application-cache", 1)
 		self.settings.set_property("enable-file-access-from-file-uris", 1)
-		self.settings.set_property("enable_default_context_menu", 0) # Disables Right click menu
+		self.settings.set_property("enable_default_context_menu", 0) # Disables the Right click menu
 		self.webview.open("http://127.0.0.1:"+str(port)+"/"+self.gamepath+"/")
 
 		# Add Scrollbars as needed
@@ -279,5 +241,8 @@ class WSEClient():
 
 
 if __name__=="__main__":
+	httpd = Thread(target=webserv)
+	httpd.daemon = True
+	httpd.start()
 	wse=WSEClient()
 	wse.main()

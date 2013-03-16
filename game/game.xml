@@ -9,7 +9,7 @@
         </triggers>
     </settings>
     <assets>
-        <textbox name="tb_main" x="5px" y="375px" width="790px" height="120px" namebox="no" speed="10" behaviour="adv">
+        <textbox name="tb_main" x="5px" y="375px" width="790px" height="120px" namebox="no" speed="50" behaviour="adv">
             <nameTemplate><b>{name}</b><br /></nameTemplate>
         </textbox>
         
@@ -21,13 +21,15 @@
         <imagepack name="evelyn" x="250px" y="50px" z="1000" cssid="evelyn">
             <image src="assets/images/evelyn-normal.png" name="default" />
             <image src="assets/images/evelyn-wink.png" name="wink" />
+            <image src="assets/images/evelyn-happy.png" name="happy" />
+            <image src="assets/images/evelyn-tongue.png" name="tease" />
         </imagepack>
         
         <background name="bg" z="100" src="assets/images/forestbg.jpg" />
         
         <audio name="environment" loop="true">
-            <track title="Forest">
-                <source href="assets/audio/Barren.mp3" type="mp3" />
+            <track title="forest">
+                <source href="assets/audio/barren.mp3" type="mp3" />
             </track>
         </audio>
     </assets>
@@ -41,7 +43,7 @@
         </scene>
         
         <scene id="my_first_scene">
-            <set asset="environment" track="Forest" />
+            <set asset="environment" track="forest" />
             <play asset="environment" />
             
             <show asset="bg" />
@@ -55,27 +57,39 @@
             <wait />
             
             <line s="e">
-                Hey! Welcome to the WebStory Engine Demo Game to showcase PyWSE!
+                Hey! Welcome to the WebStory Engine Demo Game!
             </line>
             
             <line s="e">
-                Do you want to write your own game? Just replace the imagepack, background and audio with your own stuff and away you go.
+                Do you want to write your own game? Just replace the imagepack, background and audio with your own stuff. 
             </line>
 
-            <set asset="evelyn" image="wink" />    
-            <line s="e">But just remember to change things in game.xml after you replace things or stuff might not work like you'd expect.
+            <set asset="evelyn" image="wink" />
+            <line s="e">
+				But do remember to change things in game.xml to reflect the changes or else stuff might not work like you'd expect.
             </line>
 
-            <set asset="evelyn" image="default" />               
+            <set asset="evelyn" image="default" />
             <line s="e">
                 Need more help? Check out the
-                <a href="http://webstoryengine.org" target="_blank" onclick="event.stopPropagation();">website</a> for the documentation and several example games.
-            </line>
-            
-            <line s="e">
-                Or maybe you need a bit more indepth help? So go ask the community on 
+                <a href="http://webstoryengine.org" target="_blank" onclick="event.stopPropagation();">website</a> for the documentation and several example games. Maybe you need a bit more indepth help? Best ask for help from the WebStory community on the 
                 <a href="https://iiyo.org/f/categories/webstory-engine-support" 
                     target="_blank" onclick="event.stopPropagation();">support forums</a>!
+            </line>
+            
+            <set asset="evelyn" image="happy" />
+            <line s="e">
+                Do you like this art or music? All of it's released either under Creative Commons or Public Domain Licenses. If you want to use it in your own games, then feel free. Just remember to credit the people for it, OK?
+            </line>
+
+            <set asset="evelyn" image="default" />
+            <line s="e">
+                With that, I'll have to give credit to mirelle for my sprite, BCS for the background, OokamiKasumi for the awesome textbox art and last, but not least, Amorphous for the great music your hearing in the background.
+            </line>
+            
+            <set asset="evelyn" image="tease" />
+            <line s="e">
+                Well, that's all she wrote folks. Click again to restart this whole demo over again.
             </line>
             
             <stop asset="environment" />
