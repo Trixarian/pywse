@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
-<ws name="wse-feature-walkthrough">
+<ws name="pywse-feature-walkthrough">
     <settings>
-        <stage width="800px" height="420px" create="yes" center="yes" resize="no" />
+        <stage width="800px" height="500px" create="yes" center="yes" resize="no" />
         <triggers>
             <trigger name="game_menu_key_trigger" event="keyup" key="ESCAPE" function="savegames" />
             <trigger name="next_on_right" event="keyup" key="RIGHT_ARROW" special="next" />
@@ -9,29 +9,25 @@
         </triggers>
     </settings>
     <assets>
-        <textbox name="tb_main" x="5px" y="295px" width="790px" height="120px" namebox="no" speed="40" behaviour="adv">
-            <nameTemplate><b>[{name}]</b><br /></nameTemplate>
+        <textbox name="tb_main" x="5px" y="375px" width="790px" height="120px" namebox="no" speed="10" behaviour="adv">
+            <nameTemplate><b>{name}</b><br /></nameTemplate>
         </textbox>
         
         <character name="n" textbox="tb_main"></character>
-        <character name="m" textbox="tb_main">
-            <displayname>Green Monster</displayname>
+        <character name="e" textbox="tb_main">
+            <displayname>Evelyn</displayname>
         </character>
         
-        <imagepack name="img_monster" x="300px" y="50px" z="1000" cssid="img_monster">
-            <image src="assets/images/green_monster.png" name="default" />
+        <imagepack name="evelyn" x="250px" y="50px" z="1000" cssid="evelyn">
+            <image src="assets/images/evelyn-normal.png" name="default" />
+            <image src="assets/images/evelyn-wink.png" name="wink" />
         </imagepack>
         
-        <background name="bg" z="100" src="assets/images/daytime_clouds_A_01.jpg" />
+        <background name="bg" z="100" src="assets/images/forestbg.jpg" />
         
         <audio name="environment" loop="true">
-            <track title="rain">
-                <source href="assets/audio/rain.mp3" type="mp3" />
-                <source href="assets/audio/rain.ogg" type="ogg" />
-            </track>
-            <track title="birds">
-                <source href="assets/audio/birds.mp3" type="mp3" />
-                <source href="assets/audio/birds.ogg" type="ogg" />
+            <track title="Forest">
+                <source href="assets/audio/Barren.mp3" type="mp3" />
             </track>
         </audio>
     </assets>
@@ -45,7 +41,7 @@
         </scene>
         
         <scene id="my_first_scene">
-            <set asset="environment" track="birds" />
+            <set asset="environment" track="Forest" />
             <play asset="environment" />
             
             <show asset="bg" />
@@ -54,34 +50,30 @@
             <show asset="tb_main" />
             <wait />
             
-            <set asset="img_monster" image="default" />
-            <show asset="img_monster" effect="slide" direction="top" />
+            <set asset="evelyn" image="default" />
+            <show asset="evelyn" effect="slide" direction="top" />
             <wait />
             
-            <move asset="img_monster" x="10px" />
-            <wait />
-            
-            <move asset="img_monster" x="450px" />
-            <wait />
-            
-            <move asset="img_monster" x="250px" />
-            <wait />
-            
-            <flicker asset="img_monster" />
-            <wait />
-            
-            <line s="m">
-                ROAR!!! Welcome! T'is te WebStory Engine demo game, yo!
+            <line s="e">
+                Hey! Welcome to the WebStory Engine Demo Game to showcase PyWSE!
             </line>
             
-            <line s="m">
-                Wanna write ya own game? Just replace da imagepack, background and audio wit ya own stuff, yo!
+            <line s="e">
+                Do you want to write your own game? Just replace the imagepack, background and audio with your own stuff and away you go.
+            </line>
+
+            <set asset="evelyn" image="wink" />    
+            <line s="e">But just remember to change things in game.xml after you replace things or stuff might not work like you'd expect.
+            </line>
+
+            <set asset="evelyn" image="default" />               
+            <line s="e">
+                Need more help? Check out the
+                <a href="http://webstoryengine.org" target="_blank" onclick="event.stopPropagation();">website</a> for the documentation and several example games.
             </line>
             
-            <line s="m">
-                Needin' help, dontcha? Go to te 
-                <a href="http://webstoryengine.org" target="_blank" onclick="event.stopPropagation();">website</a> for te docs.
-                Or ya wanna talk to te engine makers, gotta go to te 
+            <line s="e">
+                Or maybe you need a bit more indepth help? So go ask the community on 
                 <a href="https://iiyo.org/f/categories/webstory-engine-support" 
                     target="_blank" onclick="event.stopPropagation();">support forums</a>!
             </line>

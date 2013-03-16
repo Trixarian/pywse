@@ -133,8 +133,9 @@ def webserv():
 	port = random.randint(4000, 4999)
 	server_address = ('127.0.0.1', port)
 	httpd = HTTPServer(server_address, RequestHandler)
-	try: httpd.serve_forever()
-	except: pass
+#	try: httpd.serve_forever()
+#	except: pass
+	httpd.serve_forever()
 
 httpd = Thread(target=webserv)
 httpd.daemon = True
@@ -237,6 +238,7 @@ class WSEClient():
 		self.settings.set_property("enable-html5-local-storage", 1)
 		self.settings.set_property("enable-offline-web-application-cache", 1)
 		self.settings.set_property("enable-file-access-from-file-uris", 1)
+		self.settings.set_property("enable_default_context_menu", 0) # Disables Right click menu
 		self.webview.open("http://127.0.0.1:"+str(port)+"/"+self.gamepath+"/")
 
 		# Add Scrollbars as needed
