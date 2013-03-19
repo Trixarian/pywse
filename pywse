@@ -42,7 +42,7 @@ if (len(sys.argv) > 1):
 	if sys.argv[1] == "--base":
 		base_mode = "yes"
 
-# WebServer with Ranged HEAD and GET responses
+# WebServer with Ranged GET responses
 # Thanks to James Shubin, Xyne and Sean Goller for the base work!
 class RequestHandler(SimpleHTTPRequestHandler):
 	def __init__(self,req,client_addr,server):
