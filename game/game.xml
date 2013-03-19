@@ -30,6 +30,7 @@
         <audio name="environment" loop="true">
             <track title="forest">
                 <source href="assets/audio/barren.mp3" type="mp3" />
+                <source href="assets/audio/barren.ogg" type="ogg" />
             </track>
         </audio>
     </assets>
@@ -84,12 +85,12 @@
 
             <set asset="evelyn" image="default" />
             <line s="e">
-                With that, I'll have to give credit to mirelle for my sprite, BCS for the background, OokamiKasumi for the awesome textbox art and last, but not least, Amorphous for the great music your hearing in the background.
+                With that, I'll have to give credit to mirelle for my sprite, BCS for the background, OokamiKasumi for the awesome textbox art and last, but not least, Amorphous for the great music you're hearing in the background.
             </line>
             
             <set asset="evelyn" image="tease" />
             <line s="e">
-                Well, that's all she wrote folks. Click again to restart this whole demo over again.
+                Well, that's all she wrote folks. Click the left mouse button again to restart this demo.
             </line>
             
             <stop asset="environment" />
