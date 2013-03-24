@@ -1,2 +1,0 @@
-#!/bin/sh
-./pywse --base

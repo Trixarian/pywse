@@ -5,7 +5,6 @@
 # Released under CC0 |
 # ====================
 import os
-import sys
 import random
 import gtk
 import gobject
@@ -35,12 +34,6 @@ def write_settings(key, value):
 		if key.lower() in data.lower():
 			print data+" = "+value
 		else: print line.strip()
-
-global base_mode
-base_mode = "no"
-if (len(sys.argv) > 1):
-	if sys.argv[1] == "--base":
-		base_mode = "yes"
 
 # WebServer with Ranged GET responses
 # Thanks to James Shubin, Xyne and Sean Goller for the base work!
@@ -120,11 +113,7 @@ def webserv():
 	global port
 	port = random.randint(4000, 4999)
 	server_address = ('127.0.0.1', port)
-	if base_mode == "yes":
-		httpd = BaseHTTPServer.HTTPServer(server_address, SimpleHTTPRequestHandler)
-		print "Starting in Basic Mode..."
-	else:
-		httpd = BaseHTTPServer.HTTPServer(server_address, RequestHandler)
+	httpd = BaseHTTPServer.HTTPServer(server_address, RequestHandler)
 	httpd.serve_forever()
 
 
