@@ -9,7 +9,7 @@
         </triggers>
     </settings>
     <assets>
-        <textbox name="tb_main" x="5px" y="375px" width="790px" height="120px" namebox="no" speed="50" behaviour="adv">
+        <textbox name="tb_main" x="5px" y="375px" width="790px" height="120px" namebox="no" speed="0" behaviour="adv">
             <nameTemplate><b>{name}</b><br /></nameTemplate>
         </textbox>
         
@@ -29,8 +29,8 @@
         
         <audio name="environment" loop="true">
             <track title="forest">
-                <source href="assets/audio/barren.mp3" type="mp3" />
-                <source href="assets/audio/barren.ogg" type="ogg" />
+                <source href="assets/audio/nostalgia.mp3" type="mp3" />
+                <source href="assets/audio/nostalgia.ogg" type="ogg" />
             </track>
         </audio>
     </assets>
