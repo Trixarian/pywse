@@ -103,7 +103,7 @@ img
     position: absolute;
     background: transparent url('../assets/images/textbox.png');
     padding: 10px;
-    box-shadow: 10px 10px 40px black;
+    /* box-shadow: 10px 10px 40px black; */
     border: 0;
     -webkit-user-select: none;
     -khtml-user-select: none;

@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 # ====================
-#     PyWSE v0.6     |
+#     PyWSE v0.7     |
 #    By Trixar_za    |
 # Released under CC0 |
 # ====================
@@ -167,6 +167,9 @@ class WSEClient():
 			else: 
 				window.fullscreen()
 
+	def title_update(self, window, frame, title):
+		base_window.set_title(title)
+
 	def delete_event(self, widget, event, data=None):
 		return False
 
@@ -174,9 +177,10 @@ class WSEClient():
 		gtk.main_quit()
 
 	def __init__(self):
-		global fullscreen
+		global fullscreen, base_window
 
 		fullscreen = False
+		self.title = "pyWSE Container"
 		
 		# Load up some variables
 		self.width = self.get_width()
@@ -185,7 +189,7 @@ class WSEClient():
 
 		# Initial Window Settings
 		self.window = gtk.Window(gtk.WINDOW_TOPLEVEL)
-		self.window.set_title(read_settings("Title"))
+		self.window.set_title(self.title)
 		self.window.set_default_size(self.width, self.height)
 		self.window.set_size_request(self.width, self.height)
 		self.window.set_resizable(True)
@@ -201,9 +205,11 @@ class WSEClient():
 		self.window.connect("destroy", self.quit)
 		self.window.connect("window-state-event", self.window_state)
 		self.window.connect("key-press-event", self.fullscreen)
+		base_window = self.window
 
 		# Add in webkit features
 		self.webview = webkit.WebView()
+		self.webview.connect("title-changed", self.title_update)
 		self.gamepath = read_settings("Directory")
 
 		# Nice Reference to this: http://webkitgtk.org/reference/webkitgtk/stable/WebKitWebSettings.html
@@ -229,7 +235,7 @@ class WSEClient():
    		gtk.main()
 
 
-if __name__=="__main__":
+if __name__ == "__main__":
 	httpd = Thread(target=webserv)
 	httpd.daemon = True
 	httpd.start()
