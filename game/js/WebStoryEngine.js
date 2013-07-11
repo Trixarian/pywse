@@ -4478,7 +4478,17 @@ typeof STEINBECK === "undefined" ? false : STEINBECK));
         {
             if (assets.hasOwnProperty(key))
             {
-                assets[key].restore(saves[key]);
+                try
+                {
+                    assets[key].restore(saves[key]);
+                }
+                catch (e)
+                {
+                    console.log(e);
+                    bus.trigger("wse.interpreter.warning", {
+                        message: "Could not restore asset state for asset '" + key + "'!"
+                    });
+                }
             }
         }
     };
@@ -7234,7 +7244,12 @@ typeof STEINBECK === "undefined" ? false : STEINBECK));
         this.isPlaying = vals.isPlaying;
         this.fade = vals.fade;
         this.currentIndex = vals.currentIndex;
-        this.current.currentTime = vals.currentTime;
+        
+        if (this.tracks[this.currentIndex]) 
+        {
+            this.current = this.tracks[this.currentIndex];
+            this.current.currentTime = vals.currentTime;
+        }
         
         if (this.isPlaying)
         {
